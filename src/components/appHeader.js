@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#ff9900',
     borderBottomColor: '#f1f1f1',
     elevation: 10
   },
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   headingText: {
     fontSize: 19,
-    color: '#000000',
+    color: '#fff',
     fontWeight: 'bold'
   }
 })

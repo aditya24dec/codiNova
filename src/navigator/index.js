@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer } from 'react-navigation'
+import { createAppContainer ,createSwitchNavigator} from 'react-navigation'
 import {
   View,
   StyleSheet
@@ -9,6 +9,7 @@ import { SkypeIndicator } from 'react-native-indicators';
 import AsyncStorage from '@react-native-community/async-storage';
 import EmployeeHomeScreen from '../screens/employeeHome';
 import launchScreen from '../screens/launchScreen';
+import CreateEmployeeScreen from '../screens/createEmployee'
 import { connect } from "react-redux";
 import {H ,W} from "../utils/dimensions"
 
@@ -26,6 +27,8 @@ const navigationOptions = { header: null };
 const AuthRoot = createStackNavigator(
   {
     launch: { screen: launchScreen, navigationOptions },
+    CreateEmployee:{screen:CreateEmployeeScreen,navigationOptions}
+
   },
   {
     initialRouteName: 'launch'
@@ -37,7 +40,8 @@ const AuthContainer = createAppContainer(AuthRoot);
 
 const AppRoot = createStackNavigator(
   {
-    EmployeeHome: { screen: EmployeeHomeScreen, navigationOptions },
+    EmployeeHome: { screen:EmployeeHomeScreen, navigationOptions },
+    CreateEmployee:{screen:CreateEmployeeScreen,navigationOptions}
   },
   {
     initialRouteName: 'EmployeeHome'
@@ -45,6 +49,7 @@ const AppRoot = createStackNavigator(
 );
 
 const AppContainer = createAppContainer(AppRoot);
+
 
 class Source extends React.PureComponent {
   constructor(props) {
