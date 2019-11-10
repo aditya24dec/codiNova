@@ -21,7 +21,7 @@ export class LoadingImage extends Component {
             >
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{position: 'absolute', top: 0, bottom: 0, right: 0, left: 0, backgroundColor: 'black', opacity: 0.7}} />
-                    <SkypeIndicator color='#0076c0' />
+                    <SkypeIndicator color='#ff9900' />
                 </View>
             </Modal>
         )

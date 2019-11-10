@@ -1,14 +1,10 @@
 import React from 'react';
 import {
   View,
-  TouchableOpacity,
-  Image,
   ToastAndroid,
   Text,
   StyleSheet,
-  ScrollView,
   Alert,
-  FlatList,
   TextInput,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -16,6 +12,7 @@ import {
 import {H, W} from '../../utils/dimensions';
 import {SubmitButton} from '../../components/button';
 import AsyncStorage from '@react-native-community/async-storage';
+import { StackActions, NavigationActions } from 'react-navigation';
 import {employeeCount, storeEmployees} from '../../store/actions/employees';
 import {connect} from 'react-redux';
 import {LoadingImage} from '../../utils/loader';
@@ -86,14 +83,16 @@ class CreateEmployeeScreen extends React.PureComponent {
       salary: '',
       isLoad: false,
     };
+
   }
 
   // Function to ad employee
   addEmployee = async () => {
     const {dispatch} = this.props;
     const {firstName, lastName, jobTitle, salary} = this.state;
-    this.setState({isLoad: true});
     if (firstName != '' && lastName != '' && jobTitle != '' && salary != '') {
+      this.setState({isLoad: true});
+
       const temp = {
         firstName: firstName,
         lastName: lastName,
@@ -124,8 +123,7 @@ class CreateEmployeeScreen extends React.PureComponent {
               ToastAndroid.SHORT,
             );
 
-            this.props.navigation.goBack();
-            this.setState({isLoad: false});
+            // this.props.navigation.navigate('EmployeeHome');
 
             // empList.unshift(temp);
           } else {
@@ -147,9 +145,16 @@ class CreateEmployeeScreen extends React.PureComponent {
               'Employee detail has ben saved !!!',
               ToastAndroid.SHORT,
             );
-            this.props.navigation.goBack();
-            this.setState({isLoad: false});
+            // this.setState({isLoad: false});
           }
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'EmployeeHome' })],
+          });
+          this.props.navigation.dispatch(resetAction);
+          this.setState({isLoad: false});
+
+
         })
         .catch(err => {
           console.log('error', err);
@@ -171,6 +176,7 @@ class CreateEmployeeScreen extends React.PureComponent {
             <Text style={styles.formFieldName}>First Name</Text>
             <View style={styles.textInputContainer}>
               <TextInput
+                value={this.state.firstName}
                 underlineColorAndroid={'#ff9900'}
                 style={styles.textInput}
                 onChangeText={text => {
@@ -184,6 +190,7 @@ class CreateEmployeeScreen extends React.PureComponent {
             <Text style={styles.formFieldName}>Last Name</Text>
             <View style={styles.textInputContainer}>
               <TextInput
+                value={this.state.lastName}
                 underlineColorAndroid={'#ff9900'}
                 style={styles.textInput}
                 onChangeText={text => {
@@ -197,6 +204,7 @@ class CreateEmployeeScreen extends React.PureComponent {
             <Text style={styles.formFieldName}>Job Title</Text>
             <View style={styles.textInputContainer}>
               <TextInput
+                value={this.state.jobTitle}
                 underlineColorAndroid={'#ff9900'}
                 style={styles.textInput}
                 onChangeText={text => {
@@ -210,6 +218,7 @@ class CreateEmployeeScreen extends React.PureComponent {
             <Text style={styles.formFieldName}>Salary</Text>
             <View style={styles.textInputContainer}>
               <TextInput
+                value={this.state.salary}
                 underlineColorAndroid={'#ff9900'}
                 style={styles.textInput}
                 keyboardType="numeric"
