@@ -15,6 +15,10 @@ import {
 
 import {H, W} from '../../utils/dimensions';
 import {SubmitButton} from '../../components/button';
+import AsyncStorage from '@react-native-community/async-storage';
+import {employeeCount, storeEmployees} from '../../store/actions/employees';
+import {connect} from 'react-redux';
+import {LoadingImage} from '../../utils/loader';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,7 +28,7 @@ const styles = StyleSheet.create({
     // paddingVertical: H * 0.1
   },
   formView: {
-    height: H * 0.5,
+    height: H * 0.7,
     width: W,
     justifyContent: 'center',
     alignItems: 'center',
@@ -75,7 +79,86 @@ const styles = StyleSheet.create({
 class CreateEmployeeScreen extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      firstName: '',
+      lastName: '',
+      jobTitle: '',
+      salary: '',
+      isLoad: false,
+    };
   }
+
+  // Function to ad employee
+  addEmployee = async () => {
+    const {dispatch} = this.props;
+    const {firstName, lastName, jobTitle, salary} = this.state;
+    this.setState({isLoad: true});
+    if (firstName != '' && lastName != '' && jobTitle != '' && salary != '') {
+      const temp = {
+        firstName: firstName,
+        lastName: lastName,
+        jobTitle: jobTitle,
+        salary: salary,
+        id: firstName + lastName + new Date().getTime(),
+      };
+
+      AsyncStorage.getItem('empData')
+        .then(async emp => {
+          if (emp) {
+            const empData = JSON.parse(emp);
+            const newEmpData = {...empData};
+            newEmpData.empList.push(temp);
+            console.log('NEW DATA', newEmpData);
+            await AsyncStorage.setItem('empData', JSON.stringify(newEmpData));
+            this.setState({
+              firstName: '',
+              lastName: '',
+              salary: '',
+              jobTitle: '',
+            });
+            dispatch(storeEmployees(newEmpData.empList));
+            dispatch(employeeCount(newEmpData.empList.length));
+
+            ToastAndroid.show(
+              'Employee detail has ben saved !!!',
+              ToastAndroid.SHORT,
+            );
+
+            this.props.navigation.goBack();
+            this.setState({isLoad: false});
+
+            // empList.unshift(temp);
+          } else {
+            const empData = {
+              empList: [temp],
+              isEmpExist: true,
+            };
+
+            await AsyncStorage.setItem('empData', JSON.stringify(empData));
+            this.setState({
+              firstName: '',
+              lastName: '',
+              salary: '',
+              jobTitle: '',
+            });
+            dispatch(storeEmployees(empData.empList));
+            dispatch(employeeCount(empData.empList.length));
+            ToastAndroid.show(
+              'Employee detail has ben saved !!!',
+              ToastAndroid.SHORT,
+            );
+            this.props.navigation.goBack();
+            this.setState({isLoad: false});
+          }
+        })
+        .catch(err => {
+          console.log('error', err);
+          this.setState({isLoad: false});
+        });
+    } else {
+      Alert.alert('Error', 'Please fill all the fields');
+    }
+  };
 
   render() {
     return (
@@ -129,7 +212,7 @@ class CreateEmployeeScreen extends React.PureComponent {
               <TextInput
                 underlineColorAndroid={'#ff9900'}
                 style={styles.textInput}
-                keyboardType='numeric'
+                keyboardType="numeric"
                 onChangeText={text => {
                   this.setState({salary: text});
                 }}
@@ -138,12 +221,19 @@ class CreateEmployeeScreen extends React.PureComponent {
           </View>
 
           <View style={styles.formItemContainer}>
-            <SubmitButton buttonText={'add'} />
+            <SubmitButton
+              buttonText={'add'}
+              buttonFunction={this.addEmployee}
+            />
           </View>
         </KeyboardAvoidingView>
+        <LoadingImage isLoad={this.state.isLoad} />
       </View>
     );
   }
 }
 
-export default CreateEmployeeScreen;
+const mapStateToProps = state => ({
+  employees: state,
+});
+export default connect(mapStateToProps)(CreateEmployeeScreen);

@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer ,createSwitchNavigator} from 'react-navigation'
+import {createDrawerNavigator} from 'react-navigation-drawer';
+import { createAppContainer } from 'react-navigation'
 import {
   View,
   StyleSheet
@@ -10,6 +11,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import EmployeeHomeScreen from '../screens/employeeHome';
 import launchScreen from '../screens/launchScreen';
 import CreateEmployeeScreen from '../screens/createEmployee'
+import SideDrawer from '../screens/drawer/index'
 import { connect } from "react-redux";
 import {H ,W} from "../utils/dimensions"
 
@@ -38,13 +40,15 @@ const AuthRoot = createStackNavigator(
 const AuthContainer = createAppContainer(AuthRoot);
 
 
-const AppRoot = createStackNavigator(
+const AppRoot = createDrawerNavigator(
   {
+    launch: { screen: launchScreen, navigationOptions },
     EmployeeHome: { screen:EmployeeHomeScreen, navigationOptions },
     CreateEmployee:{screen:CreateEmployeeScreen,navigationOptions}
   },
   {
-    initialRouteName: 'EmployeeHome'
+    initialRouteName: 'EmployeeHome',
+    contentComponent : SideDrawer
   }
 );
 
@@ -55,7 +59,7 @@ class Source extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isEmpExist: false,
+      isEmpExist: true,
       loading: false
     }
   }
@@ -77,7 +81,7 @@ class Source extends React.PureComponent {
   }
 
   render() {
-    const { loading} = this.state;
+    const { loading,isEmpExist} = this.state;
     if (loading) {
       return (
         <View style={styles.container} >
@@ -87,7 +91,8 @@ class Source extends React.PureComponent {
     } else {
       return (
         <View style={styles.container} >
-          <AppContainer  />
+          {isEmpExist ? <AppContainer  /> : <AuthContainer />}
+          
         </View>
       )
     }

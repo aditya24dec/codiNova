@@ -9,9 +9,18 @@ export const storeEmployees = (param) => {
   });
 } 
 
-export const createEmployee = (param) =>{
+export const employeeCount = (param) =>{
   return ({
-    type:ActionTypes.CREATE_EMPLOYEE,
+    type:ActionTypes.EMPLOYEE_COUNT,
+    payload:param
+  })
+}
+
+
+export const favouriteCount = (param) =>{
+
+  return ({
+    type:ActionTypes.EMPLOYEE_FAVOURITE_COUNT,
     payload:param
   })
 }

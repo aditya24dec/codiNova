@@ -10,6 +10,12 @@ import {
 
 import addIcon from '../../assets/plus_icon.png';
 import AsyncStorage from '@react-native-community/async-storage';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 
 
 const styles = StyleSheet.create({
@@ -57,13 +63,22 @@ export default class Appheader extends React.PureComponent {
     const { heading } = this.props;
     return (
       <View style={styles.container} >
-        <TouchableOpacity style={styles.subContainer}>
+        <TouchableOpacity style={styles.subContainer} onPress={()=>this.props.openEmpform()} >
           <Image source={addIcon} style={{ height: 25, width: 25, }} />
         </TouchableOpacity>
         <View style={styles.headingView} >
           <Text style={styles.headingText} >{heading}</Text>
         </View>
-        <TouchableOpacity style={styles.subContainer} >
+        <TouchableOpacity style={styles.subContainer} onPress={()=>{this.props.sortEmpData()}}>
+        <View>
+    <Menu>
+      <MenuTrigger ><Text>Sort</Text></MenuTrigger>
+      <MenuOptions>
+        <MenuOption onSelect={() => this.props.sortEmpData("firstName")} text='Sort By First Name' />
+        <MenuOption onSelect={() => this.props.sortEmpData("lastName")} text="Sort By Last Name"/>
+      </MenuOptions>
+    </Menu>
+  </View>
         </TouchableOpacity>
       </View>
     )

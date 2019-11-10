@@ -5,6 +5,7 @@ import {
 import AppSource from './src/navigator';
 import { Provider } from 'react-redux';
 import store from "./src/store";
+import { MenuProvider } from 'react-native-popup-menu';
 
 export default class App extends React.PureComponent {
   constructor(props) {
@@ -15,7 +16,10 @@ export default class App extends React.PureComponent {
     return (
       <Provider style={{ flex: 1, }} store={store} >
         <SafeAreaView style={{ flex: 1 }}>
+          <MenuProvider>
+
           <AppSource />
+          </MenuProvider>
         </SafeAreaView>
       </Provider>
     );
