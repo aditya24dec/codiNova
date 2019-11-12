@@ -3,6 +3,8 @@ import {View, TouchableOpacity, ToastAndroid, Text, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import styles from './styles'
 import {H, W} from '../../utils/dimensions';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 import {
   storeEmployees,
@@ -95,20 +97,20 @@ class EmployeeHomeBase extends React.PureComponent {
             <TouchableOpacity
               onPress={() => this.markFavourite(data.item)}
               style={{
-                height: 20,
-                width: 20,
-                borderRadius: 20 / 2,
-                backgroundColor: 'red',
-              }}></TouchableOpacity>
+                // height: 20,
+                // width: 20,
+                // borderRadius: 20 / 2,
+                // backgroundColor: 'red',
+              }}><Icon name="star" size={30} color="#fee12b"/></TouchableOpacity>
           ) : (
             <TouchableOpacity
               onPress={() => this.markFavourite(data.item)}
               style={{
-                height: 20,
-                width: 20,
-                borderRadius: 20 / 2,
-                backgroundColor: 'yellow',
-              }}></TouchableOpacity>
+                // height: 20,
+                // width: 20,
+                // borderRadius: 20 / 2,
+                // backgroundColor: 'yellow',
+              }}><Icon name="star-o" size={30} color="#000"/></TouchableOpacity>
           )}
         </View>
       </View>

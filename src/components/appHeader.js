@@ -10,6 +10,8 @@ import {
 
 import drawerIcon from '../../assets/drawerIcon.png';
 import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import {
   Menu,
   MenuOptions,
@@ -59,7 +61,7 @@ export default class Appheader extends React.PureComponent {
         <TouchableOpacity
           style={styles.subContainer}
           onPress={() => this.props.openEmpform()}>
-          <Image source={drawerIcon} style={{height: 25, width: 25}} />
+          <Icon name="navicon" size={30} color="#fff"/>
         </TouchableOpacity>
         <View style={styles.headingView}>
           <Text style={styles.headingText}>{heading}</Text>
@@ -72,7 +74,7 @@ export default class Appheader extends React.PureComponent {
           <View>
             <Menu>
               <MenuTrigger>
-                <Text>Sort</Text>
+                <Icon name="sort-amount-asc" size={25} color="#fff"/>
               </MenuTrigger>
               <MenuOptions>
                 <MenuOption
